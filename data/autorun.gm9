@@ -20,7 +20,7 @@ if find $[DIGITAL] NULL
     imgmount $[DIGITAL]
     set SOURCE G:
 else
-    echo "Impossibile trovare una copia di Spirit of\nJustice sul 3DS. Assicurati che sia installato\ncorrettamente e riavvia il patcher."
+    echo "Impossibile trovare una copia di Spirit of\nJustice sul 3DS. Assicurati che il gioco sia\ninstallato correttamente e riavvia il patcher."
     reboot
 end
 
