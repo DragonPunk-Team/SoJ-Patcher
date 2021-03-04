@@ -388,7 +388,7 @@ int ApplyBeatPatch(const char* targetName) {
         }
     }
     
-    u32 patchSourceChecksum = beatReadChecksum();
+    beatReadChecksum();
     u32 patchTargetChecksum = beatReadChecksum();
     u32 finalPatchChecksum = ~bpsChecksum;
     u32 patchPatchChecksum = beatReadChecksum();
@@ -399,10 +399,9 @@ int ApplyBeatPatch(const char* targetName) {
     }
     
     if (!bpmIsActive) { finalPatchChecksum = closeFile(patch); patch = NULL; }
-    u32 finalSourceChecksum = closeFile(source); source = NULL;
+    closeFile(source); source = NULL;
     u32 finalTargetChecksum = closeFile(target); target = NULL;
     if(finalPatchChecksum != patchPatchChecksum) return fatalError(BEAT_PATCH_CHECKSUM_INVALID);
-    if(finalSourceChecksum != patchSourceChecksum) return fatalError(BEAT_SOURCE_CHECKSUM_INVALID);
     if(finalTargetChecksum != patchTargetChecksum) return fatalError(BEAT_TARGET_CHECKSUM_INVALID);
     
     return BEAT_SUCCESS;
