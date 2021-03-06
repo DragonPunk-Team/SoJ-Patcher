@@ -51,6 +51,9 @@ cp -p $[SOURCE]/romfs/archive/msg_cmn_eng.arc $[OUTPATH]/SOJ-ENG.bin
 cp -p $[SOURCE]/romfs/archive/spirit_eng.arc $[OUTPATH]/SOJ-ENG.bin
 cp -p $[SOURCE]/romfs/archive/title_eng.arc $[OUTPATH]/SOJ-ENG.bin
 cp -p $[SOURCE]/romfs/archive/UI_cmn_eng.arc $[OUTPATH]/SOJ-ENG.bin
+cp -p $[SOURCE]/romfs/movie/gs_01_01_eng.moflex $[OUTPATH]/SOJ-ENG.bin
+cp -p $[SOURCE]/romfs/movie/sp_0200_0_eng.moflex $[OUTPATH]/SOJ-ENG.bin
+cp -p $[SOURCE]/romfs/movie/sp_0200_1_eng.moflex $[OUTPATH]/SOJ-ENG.bin
 cp -p $[SOURCE]/romfs/msg/chapter0_eng.gmd $[OUTPATH]/SOJ-ENG.bin
 cp -p $[SOURCE]/romfs/msg/chapter1_eng.gmd $[OUTPATH]/SOJ-ENG.bin
 cp -p $[SOURCE]/romfs/msg/chapter2_eng.gmd $[OUTPATH]/SOJ-ENG.bin
