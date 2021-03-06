@@ -365,14 +365,6 @@ if not sha $[OUTPATH]/SoJ-ENG.bin "46ED60A59DD3F3CBB14C91D70F2C64FD0E9A6BB3449DE
 end
 
 applybps $[APPPATH]/SoJ-Patch-v$[SOJ_VERSION].bps $[OUTPATH]/SoJ-ENG.bin $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia
-
-if not sha $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia "8E980DA19425BC04B2004EDE3559FDFB18ADD73713D13E89CFF6459CE62DA9B7"
-	echo "Si è verificato un errore nella creazione del CIA.\nAssicurati di aver estratto tutti i file\ndallo .zip della patch e riprova."
-	rm $[OUTPATH]
-	rm $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia
-	poweroff
-end
-
 verify $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia
 
 rm $[OUTPATH]
