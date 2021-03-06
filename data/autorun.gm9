@@ -4,12 +4,15 @@ set APPPATH 0:/3ds/DragonPunkTeam
 set OUTPATH 0:/3ds/DragonPunkTeam/SoJ
 set DIGITAL A:/title/00040000/0018FA00/content/00000002.app
 
+echo "Benvenuto nel patcher di Spirit of Justice.\nVerra' installata la versione $[SOJ_VERSION] della\ntraduzione a cura del DragonPunk Team.\n\nL'installazione durera' qualche minuto."
+
 if not find $[APPPATH]/SoJ-Patch-v$[SOJ_VERSION].bps NULL
     echo "Impossibile trovare\nSD:/3DS/DragonPunkTeam/SoJ-Patch-v$[SOJ_VERSION].bps\nAssicurati di aver estratto tutti i file\ndallo .zip della patch e riprova."
     poweroff
+elif not sha $[APPPATH]/SoJ-Patch-v$[SOJ_VERSION].bps "FA41F574646AE70C1B652C66F7994AADF220E578F73DEB6931D05913C70D213C"
+	echo "La patch è danneggiata.\nAssicurati di aver estratto tutti i file\ndallo .zip della patch e riprova."
+	poweroff
 end
-
-echo "Benvenuto nel patcher di Spirit of Justice.\nVerra' installata la versione $[SOJ_VERSION] della\ntraduzione a cura del DragonPunk Team.\n\nL'installazione durera' qualche minuto."
 
 mkdir 0:/3ds
 mkdir $[APPPATH]
@@ -355,7 +358,21 @@ cp -p $[SOURCE]/romfs/UI/8_evi/tex/item5_30_0_p_eng_BM_NOMIP_HQ.tex $[OUTPATH]/S
 cp -p $[SOURCE]/romfs/UI/8_evi/tex/item9_02_0_p_eng_BM_NOMIP_HQ.tex $[OUTPATH]/SOJ-ENG.bin
 # End RomFS
 
+if not sha $[OUTPATH]/SoJ-ENG.bin "46ED60A59DD3F3CBB14C91D70F2C64FD0E9A6BB3449DE9907205BB2F02695774"
+	echo "Impossibile creare il file CIA.\nAssicurati che il gioco sia\ninstallato correttamente e riavvia il patcher."
+	rm $[OUTPATH]
+	poweroff
+end
+
 applybps $[APPPATH]/SoJ-Patch-v$[SOJ_VERSION].bps $[OUTPATH]/SoJ-ENG.bin $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia
+
+if not sha $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia "8E980DA19425BC04B2004EDE3559FDFB18ADD73713D13E89CFF6459CE62DA9B7"
+	echo "Si è verificato un errore nella creazione del CIA.\nAssicurati di aver estratto tutti i file\ndallo .zip della patch e riprova."
+	rm $[OUTPATH]
+	rm $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia
+	poweroff
+end
+
 verify $[APPPATH]/SoJ-ITA-DPT-v$[SOJ_VERSION].cia
 
 rm $[OUTPATH]
