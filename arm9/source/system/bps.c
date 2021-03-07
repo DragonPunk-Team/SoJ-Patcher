@@ -272,7 +272,6 @@ void findNewOffset(BeatFile *bf) {
 }
 
 int ApplyBeatPatch(const char* targetName) {
-    bpsChecksum = ~0;
     patch->relOffset = 0;
     if(bpsSize < 19) return fatalError(BEAT_PATCH_TOO_SMALL);
     
@@ -321,7 +320,6 @@ int ApplyBeatPatch(const char* targetName) {
                     break;
                 case BEAT_TARGETREAD:
                     memcpy(&target->dataChunks[0].data[target->currOffset], &patch->dataChunks[0].data[patch->currOffset], length);
-                    if (bpmIsActive) bpsChecksum = crc32_calculate(bpsChecksum, &patch->dataChunks[0].data[patch->currOffset], length);
                     target->currOffset += length; patch->currOffset += length; patch->relOffset += length;
                     break;
                 case BEAT_SOURCECOPY:
@@ -360,7 +358,6 @@ int ApplyBeatPatch(const char* targetName) {
                         } else { inChunk = 0; inPos = patch->currOffset; }
                         length -= maxlen; target->currOffset += maxlen; patch->currOffset += maxlen; patch->relOffset += maxlen;
                         memcpy(&target->dataChunks[outChunk].data[outPos], &patch->dataChunks[inChunk].data[inPos], maxlen);
-                        if (bpmIsActive) bpsChecksum = crc32_calculate(bpsChecksum, &patch->dataChunks[inChunk].data[inPos], maxlen);
                         break;
                     case BEAT_SOURCECOPY:
                         if (chunkedSource) {
@@ -388,21 +385,9 @@ int ApplyBeatPatch(const char* targetName) {
         }
     }
     
-    beatReadChecksum();
-    u32 patchTargetChecksum = beatReadChecksum();
-    u32 finalPatchChecksum = ~bpsChecksum;
-    u32 patchPatchChecksum = beatReadChecksum();
-    
-    while (source->checksumNeeded <= source->size / chunkSize) { // not all source chunks are guaranteed to have been checksummed
-        if (!source->dataChunks[source->checksumNeeded].data) readChunk(source, source->checksumNeeded);
-        checksumChunk(source, source->checksumNeeded);
-    }
-    
-    if (!bpmIsActive) { finalPatchChecksum = closeFile(patch); patch = NULL; }
+    if (!bpmIsActive) { closeFile(patch); patch = NULL; }
     closeFile(source); source = NULL;
-    u32 finalTargetChecksum = closeFile(target); target = NULL;
-    if(finalPatchChecksum != patchPatchChecksum) return fatalError(BEAT_PATCH_CHECKSUM_INVALID);
-    if(finalTargetChecksum != patchTargetChecksum) return fatalError(BEAT_TARGET_CHECKSUM_INVALID);
+    closeFile(target); target = NULL;
     
     return BEAT_SUCCESS;
 }
